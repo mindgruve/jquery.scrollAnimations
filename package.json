@@ -1,0 +1,28 @@
+{
+  "name": "scroll-animations",
+  "version": "1.0.0",
+  "description": "jQuery plugin for scroll position based reveal animations",
+  "main": "dist/jquery.scrollAnimations.js",
+  "scripts": {
+    "build": "cp src/jquery.scrollAnimations.js dist/jquery.scrollAnimations.js && uglifyjs dist/jquery.scrollAnimations.js --output dist/jquery.scrollAnimations.min.js"
+  },
+  "devDependencies": {
+    "uglify-js": "^2.6.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mindgruve/jquery.scrollAnimations.git"
+  },
+  "contributors": [
+    {
+      "name": "Westley Mon",
+      "email": "mon@westleymon.com",
+      "url": "http://westleymon.com/"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/mindgruve/jquery.scrollAnimations/issues"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/mindgruve/jquery.scrollAnimations#readme"
+}
