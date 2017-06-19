@@ -15,13 +15,13 @@ An optional dependency is [Animate.css](https://github.com/daneden/animate.css).
 
 ### How to use
 
-####1. Include Javascript
+##### 1. Include Javascript
 ```html
 <script src="jquery.js"></script>
 <script src="dist/jquery.scrollAnimations.js"></script>
 ```
 
-####2. Required CSS
+##### 2. Required CSS
 ```css
 [data-animation] {
     opacity: 0;
@@ -32,7 +32,7 @@ An optional dependency is [Animate.css](https://github.com/daneden/animate.css).
 }
 ```
 
-####3. Markup your elements
+##### 3. Markup your elements
 
 Animating a single element is simple!
 ```html
@@ -68,7 +68,7 @@ Animating a single element is simple!
   - A set of elements requires the `[data-animation-container]` attribute on a container element like the `<section>` above.  When this element travels into the viewport, the animations for all "child" elements will kick off.
   - The "child" elements, or the elements that will actually be animating, require the `[data-animation-child]` and `[data-animation]` attributes.  The `[data-animation-delay]` attribute is optional, but as shown in the example above, the second column has a `500ms` delay, giving it a staggered effect.
 
-####4. Initialize the plugin.
+##### 4. Initialize the plugin.
 ```javascript
 var $containers = $('[data-animation]:not([data-animation-child]), [data-animation-container]');
 $containers.scrollAnimations();
