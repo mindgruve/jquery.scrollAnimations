@@ -1,3 +1,10 @@
+/**
+ * jQuery ScrollAnimations
+ * @version 1.0.0
+ * @author Westley Mon @cavemon, Mindgruve @mindgruve
+ * @copyright (c) 2017 Mindgruve / Westley Mon
+ * @license MIT License
+ */
 ;
 (function ($, window, document, undefined) {
 
