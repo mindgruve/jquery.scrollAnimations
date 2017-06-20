@@ -76,6 +76,20 @@ $containers.scrollAnimations();
 
 That's it!
 
+#### Configuration options
+
+| Option                 | Values                | Default | Description |
+| ---------------------- | --------------------- | ------- | ----------- |
+| `offset` | `decimal`     | `0.8`  | Distance from top of viewport animations will begin, expressed in percentage of window height. |
+
+Example usage:
+
+```javascript
+$('[data-animation]').scrollAnimations({
+	offset: 0.5
+});
+```
+
 ## Examples
 
 For now, see `demos/index.html`.

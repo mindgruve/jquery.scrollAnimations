@@ -1,7 +1,16 @@
 ;
 (function ($, window, document, undefined) {
 
-    var pluginName = "scrollAnimations";
+    var pluginName = "scrollAnimations",
+        /**
+         * This SearchHintOptions object can be overridden during initialization
+         * @type {{offset: number}}
+         */
+        defaults = {
+            offset: 0.8
+        };
+
+    var timer;
 
     /**
      * ScrollAnimations - applies an animate class to elements when scrolled into the viewport
@@ -18,15 +27,14 @@
             this.element = element;
             this.animationElements = [];
             this.triggerPoint = null;
-            this.scrollIntervalID = null;
             this.lastScrollPos = -1;
-            this.timer = null;
 
             // jQuery has an extend method which merges the contents of two or
             // more objects, storing the result in the first object. The first object
             // is generally empty as we don't want to alter the default options for
             // future instances of the plugin
-            this.options = $.extend( {}, options );
+            this.options = $.extend( {}, defaults, options );
+            this._defaults = defaults;
             this._name = pluginName;
             window.onload = this.init();
         }
@@ -39,76 +47,72 @@
 
             var $els = $(this.element);
 
-            var containers = $els.filter('[data-animation-container]');
-            var items = $els.not(containers);
+            //setup all items
+            _this.setup($els);
 
-            //set single items
-            _this.setup(items);
-
-            // setup animation sets
-            containers.each(function() {
-                _this.setup($(this));
-            });
-
-            //setInterval(_this.updatePage(_this), 10);
-            this.scrollIntervalID = setInterval(function () {
+            // start an interval to update the page rather than onscroll
+            var scrollIntervalID = setInterval(function () {
                 _this.updatePage(_this);
             }, 10);
 
+            $(window).on('resize', function () {
+                _this.resize();
+            });
         },
 
         resize: function () {
             var _this = this;
-            clearTimeout(_this.timer);
 
-            _this.timer = setTimeout(function () {
-                this.triggerPoint = window.innerHeight * 0.8;
-            }, 50)
+            clearTimeout(timer);
 
+            timer = setTimeout(function () {
+                _this.setTriggerpoint();
+            }, 50);
+        },
+
+        setTriggerpoint: function() {
+            this.triggerPoint = window.innerHeight * this.options.offset;
         },
 
         setup: function(items) {
-            var _this = this;
-            this.triggerPoint = window.innerHeight * 0.8;
+            this.setTriggerpoint();
 
-            items.each(function() {
-                var $this = $(this),
-                    $children = $(this).find('[data-animation-child]');
+            var $this = $(items),
+                $children = $this.find('[data-animation-child]');
 
-                if ($children.length > 0) {
+            if ($children.length) {
 
-                    // setup children
-                    $children.each(function() {
-                        var $child = $(this);
-                        var $delay = $child.attr('data-animation-delay');
+                // setup children
+                $children.each(function() {
+                    var $child = $(this);
+                    var $delay = $child.attr('data-animation-delay');
 
-                        $child.css({
-                            '-webkit-animation-delay':  $delay,
-                            '-moz-animation-delay':     $delay,
-                            '-ms-animation-delay':      $delay,
-                            '-o-animation-delay':       $delay,
-                            'animation-delay':          $delay
-                        });
-                    });
-
-                } else {
-
-                    var $delay = $(this).attr('data-animation-delay');
-                    
-                    // setup single item
-                    $this.css({
+                    $child.css({
                         '-webkit-animation-delay':  $delay,
                         '-moz-animation-delay':     $delay,
                         '-ms-animation-delay':      $delay,
                         '-o-animation-delay':       $delay,
                         'animation-delay':          $delay
                     });
+                });
 
-                }
+            } else {
 
-                _this.animationElements.push($this);
+                var $delay = $this.attr('data-animation-delay');
 
-            })
+                // setup single item
+                $this.css({
+                    '-webkit-animation-delay':  $delay,
+                    '-moz-animation-delay':     $delay,
+                    '-ms-animation-delay':      $delay,
+                    '-o-animation-delay':       $delay,
+                    'animation-delay':          $delay
+                });
+
+            }
+
+            this.animationElements.push($this);
+
         },
 
         updatePage: function (plugin) {
@@ -116,25 +120,26 @@
 
             window.requestAnimationFrame(function () {
                 _this.animateElements();
-            })
+            });
         },
 
         animateElements: function() {
             var _this = this;
             var scrollPos = window.pageYOffset;
-            
+
+            // have we scrolled since the last rAF?  if not, return.
             if (scrollPos === this.lastScrollPos) return;
 
             this.lastScrollPos = scrollPos;
 
-            for (var i=0; i < _this.animationElements.length; i++) {
-                var $this = $(_this.animationElements[i]),
+            $(_this.animationElements).each(function() {
+                var $this = $(this),
                     $children = $this.find('[data-animation-child]');
 
                 if ($this.hasClass('animated') || (scrollPos < $this.offset().top - _this.triggerPoint))
                     return; // don't continue if its already been animated or scroll position hasn't hit the trigger point yet
 
-                if ($children.length > 0) {
+                if ($children.length) {
 
                     $this.addClass('animated');
 
@@ -149,7 +154,7 @@
                     $this.addClass('animated').addClass( $this.attr('data-animation') );
 
                 }
-            }
+            });
         }
 
     };
