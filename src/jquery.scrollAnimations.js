@@ -1,6 +1,6 @@
 /**
  * jQuery ScrollAnimations
- * @version 1.0.0
+ * @version 1.0.1
  * @author Westley Mon @cavemon, Mindgruve @mindgruve
  * @copyright (c) 2017 Mindgruve / Westley Mon
  * @license MIT License
@@ -54,13 +54,17 @@
 
             var $els = $(this.element);
 
+            window.requestAnimationFrame = window.requestAnimationFrame
+                || window.mozRequestAnimationFrame
+                || window.webkitRequestAnimationFrame
+                || window.msRequestAnimationFrame
+                || function(f){setTimeout(f, 1000/60)};
+
             //setup all items
             _this.setup($els);
 
             // start an interval to update the page rather than onscroll
-            var scrollIntervalID = setInterval(function () {
-                _this.updatePage(_this);
-            }, 10);
+            _this.updatePage();
 
             $(window).on('resize', function () {
                 _this.resize();
@@ -122,12 +126,12 @@
 
         },
 
-        updatePage: function (plugin) {
-            var _this = plugin;
+        updatePage: function () {
+            var _this = this;
 
-            window.requestAnimationFrame(function () {
-                _this.animateElements();
-            });
+            this.animateElements();
+
+            requestAnimationFrame(this.updatePage.bind(this));
         },
 
         animateElements: function() {
@@ -162,6 +166,8 @@
 
                 }
             });
+
+
         }
 
     };

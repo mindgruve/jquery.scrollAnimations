@@ -1,6 +1,6 @@
 {
   "name": "scroll-animations",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "jQuery plugin for scroll position based reveal animations",
   "main": "dist/jquery.scrollAnimations.js",
   "scripts": {
