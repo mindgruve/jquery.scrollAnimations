@@ -23,6 +23,9 @@
   "license": "MIT",
   "homepage": "https://github.com/mindgruve/jquery.scrollAnimations#readme",
   "dependencies": {
+    "jquery": ">=3.0.0"
+  },
+  "devDependencies": {
     "uglify-js": "^3.0.18"
   }
 }
